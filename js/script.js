@@ -8,16 +8,12 @@ let ext =       domID('extension')
 let email =     domID('email')
 let dept =      domID('department')
 
-//WE NEED THE GET THE TBODY IN ORDER TO KEEP THE FORMATTING WHEN WE APPEND THE NEW ROWS LATER.
-//console.log(form.nodeType)
-// let employees = domID('employees')
-// let tbody = employees.children[0]
-let tbody = domID('employees').children[0]
-console.log(tbody)
+// THE TABLE ITSELF
+let employees = domID('employees')
 
 // SET A COUNT VARIABLE TO DISPLAY NEXT TO EMPLOYEES HEADER
-let empNum = domID('empCount')
-empNum.value = 0
+let empCount = domID('empCount')
+empCount.value = 0
 
 // ADD EMPLOYEE
 form.addEventListener('submit', (e) => {
@@ -25,67 +21,56 @@ form.addEventListener('submit', (e) => {
     e.preventDefault()
 
     // GET THE VALUES FROM THE TEXT BOXES
-    //MADE THE VALUES AN ARRAY SO I COULD LOOP THROUGH THEM LATER
     let newValues = [eid.value, fullName.value, ext.value, email.value, dept.value]
-    // let newEid =        eid.value
-    // let newFullName =   fullName.value
-    // let newExt =        ext.value
-    // let newEmail =      email.value
-    // let newDept =       dept.value
-    // console.log(newEid)
-    //console.log(newValues)
 
     // INSERT A NEW ROW AT THE END OF THE EMPLOYEES TABLE
-    let tr = document.createElement('tr')    
+    // ADDED 1 SINCE IT WAS LOWERING THE TABLE HEADER. ADDED PARSEINT SINCE IT WAS CONCATENATING
+    let tr = employees.insertRow(parseInt(empCount.value) + 1)
 
     // INSERT A CELL FOR EACH ITEM WITHIN THE NEW ROW
-    for (let i = 0; i < newValues.length; i++) {
-
-        //CREATE A TH. CREATE A TEXT NODE. MAKE TEXT NODE CHILD OF TH. MAKE TH CHILD OF TR.
-        let th = document.createElement('th')
-        let textNode = document.createTextNode(newValues[i])
-        th.appendChild(textNode)
-        tr.appendChild(th)
-    }
-    //AFTER THE ROW IS CONSTRUCTED MAKE TR CHILD OF TBODY.
-    tbody.appendChild(tr)
-
+    // I HAD THIS AS A FOR LOOP ORIGINALLY, BUT THIS WORKS
+    let cell1 = tr.insertCell(0)
+    let cell2 = tr.insertCell(1)
+    let cell3 = tr.insertCell(2)
+    let cell4 = tr.insertCell(3)
+    let cell5 = tr.insertCell(4)
+    let cellDel = tr.insertCell(5)
 
     // APPEND THE TEXT VALUES AS TEXT NODES WITHIN THE CELLS
+    cell1.appendChild(document.createTextNode(newValues[0]))
+    cell2.appendChild(document.createTextNode(newValues[1]))
+    cell3.appendChild(document.createTextNode(newValues[2]))
+    cell4.appendChild(document.createTextNode(newValues[3]))
+    cell5.appendChild(document.createTextNode(newValues[4]))
 
     // CREATE THE DELETE BUTTON
     let deleteEmp = document.createElement('button')
-    deleteEmp.className = 'btn btn-danger btn-sm float-end delete'
-    deleteEmp.style.color = 'red'
+    deleteEmp.className = 'btn btn-danger btn-sm float-end'
     deleteEmp.appendChild(document.createTextNode('X'))
-    tr.appendChild(deleteEmp)
+    cellDel.appendChild(deleteEmp)
 
     // RESET THE FORM
-    //form.reset()
+    form.reset()
 
     // SET FOCUS BACK TO THE ID TEXT BOX
     eid.focus()
 
     // INCREMENENT THE NUMBER OF EMPLOYEES IN THE TABLE
-    empNum.value++
+    empCount.value++
 
 })
 
 // DELETE EMPLOYEE
 
-tbody.addEventListener('click', (e) => {
-    //WILL APPLY IF CLICKED ELEMENT CONTAINS DELETE CLASS
-    if (e.target.classList.contains('delete')) {
-        //CONFIRMATION BEFORE DELETION
-        if (confirm('Permanently remove this employee from records?')) {
-  
-        tbody.removeChild(e.target.parentElement)
+employees.addEventListener('cck', (e) => {
 
-        empNum.value--
+    // CONFIRM DELETE ACTION
+    if (confirm('Do you want to permanently delete this employee from records?')) {
+
+        // DELETE A ROW FROM THE EMPLOYEE TABLE TARGETING THE TRIGGERING ELEMENT BUTTON, CHOOSING IT'S PARENTS CELL AND TR, AND REFERENCING IT'S INDEX
+        employees.deleteRow(e.target.parentNode.parentNode.rowIndex)
+        empCount.value--
         } else {
-
-        }
+        alert('Delete action was NOT performed.')
     }
-  
-
 })
