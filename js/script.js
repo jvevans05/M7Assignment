@@ -49,6 +49,24 @@ form.addEventListener('submit', (e) => {
     deleteEmp.appendChild(document.createTextNode('X'))
     cellDel.appendChild(deleteEmp)
 
+    // the event listener added directly to the button
+    deleteEmp.addEventListener('click', (e) => {
+
+        //not this way
+        //if (e.target.classList.contains('btn-danger')) {
+    
+        // CONFIRM DELETE ACTION
+        if (confirm('Do you want to permanently delete this employee from records?')) {
+    
+            // DELETE A ROW FROM THE EMPLOYEE TABLE TARGETING THE TRIGGERING ELEMENT BUTTON, CHOOSING IT'S PARENTS CELL AND TR, AND REFERENCING IT'S INDEX        
+                employees.deleteRow(e.target.parentNode.parentNode.rowIndex)
+                empCount.value--
+            } else {
+                alert('Delete action was NOT performed.')
+            }
+        //}
+    })
+
     // RESET THE FORM
     form.reset()
 
@@ -60,17 +78,38 @@ form.addEventListener('submit', (e) => {
 
 })
 
+
+
+/*
+
 // DELETE EMPLOYEE
 
-employees.addEventListener('cck', (e) => {
+employees.addEventListener('button', (e) => {
+
+    //if (e.target.classList.contains('btn-danger')) {
 
     // CONFIRM DELETE ACTION
     if (confirm('Do you want to permanently delete this employee from records?')) {
 
-        // DELETE A ROW FROM THE EMPLOYEE TABLE TARGETING THE TRIGGERING ELEMENT BUTTON, CHOOSING IT'S PARENTS CELL AND TR, AND REFERENCING IT'S INDEX
-        employees.deleteRow(e.target.parentNode.parentNode.rowIndex)
-        empCount.value--
+        // DELETE A ROW FROM THE EMPLOYEE TABLE TARGETING THE TRIGGERING ELEMENT BUTTON, CHOOSING IT'S PARENTS CELL AND TR, AND REFERENCING IT'S INDEX        
+            employees.deleteRow(e.target.parentNode.parentNode.rowIndex)
+            empCount.value--
         } else {
-        alert('Delete action was NOT performed.')
-    }
+            alert('Delete action was NOT performed.')
+        }
+    //}
 })
+
+employees.addEventListener('click', (e) => {
+
+    console.log(e.target)
+    console.log(e.target.parentNode)
+    console.log(e.target.parentNode.parentNode)
+    console.log(e.target.parentNode.parentNode.rowIndex)
+
+    // DELETE A ROW FROM THE EMPLOYEE TABLE TARGETING THE TRIGGERING ELEMENT BUTTON, CHOOSING IT'S PARENTS CELL AND TR, AND REFERENCING IT'S INDEX        
+    // employees.deleteRow(e.target.parentNode.parentNode.rowIndex)
+
+})
+
+*/
